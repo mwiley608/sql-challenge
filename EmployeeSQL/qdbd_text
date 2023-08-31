@@ -1,37 +1,37 @@
 QuickDBD
 
 
-Titles
+titles
 --
 title_id VARCHAR(10) PK 
 title VARCHAR(30)
 
-Departments
---
-dept_no VARCHAR(10) PK
-dept_name VARCHAR(30)
-
-Employees
+employees
 --
 emp_no INT PK
-title_id VARCHAR(10) FK >- Titles.title_id
+title_id VARCHAR(10) FK >- titles.title_id
 birth_date DATE
 first_name VARCHAR(30)
 last_name VARCHAR(255)
 sex VARCHAR(5)
 hire_date DATE
 
-Dept_Emp
+departments
 --
-emp_no INT FK >- Employees.emp_no
-dept_no VARCHAR(10) 
+dept_no VARCHAR(10) PK
+dept_name VARCHAR(30)
 
-Dept_Managers
+dept_emp
 --
-dept_no VARCHAR(10) FK >- Departments.dept_no
-emp_no INT FK >- Employees.emp_no
+emp_no INT FK >- employees.emp_no
+dept_no VARCHAR(10) FK >- departments.dept_no
 
-Salaries
+dept_managers
 --
-emp_no INT FK >- Employees.emp_no
+dept_no VARCHAR(10) FK >- departments.dept_no
+emp_no INT FK >- employees.emp_no
+
+salaries
+--
+emp_no INT FK >- employees.emp_no
 salary INT

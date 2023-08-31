@@ -1,29 +1,22 @@
 -- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
 -- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
-DROP TABLE IF EXISTS Titles;
-DROP TABLE IF EXISTS Departments;
-DROP TABLE IF EXISTS Employees;
-DROP TABLE IF EXISTS Dept_Emp;
-DROP TABLE IF EXISTS Dept_Managers;
-DROP TABLE IF EXISTS Salaries;
+
+DROP TABLE titles CASCADE;
+DROP TABLE employees CASCADE;
+DROP TABLE departments CASCADE;
+DROP TABLE dept_emp CASCADE;
+DROP TABLE dept_managers CASCADE;
+DROP TABLE salaries CASCADE;
 
 CREATE TABLE "titles" (
     "title_id" VARCHAR(10)   NOT NULL,
     "title" VARCHAR(30)   NOT NULL,
-    CONSTRAINT "pk_Titles" PRIMARY KEY (
+    CONSTRAINT "pk_titles" PRIMARY KEY (
         "title_id"
      )
 );
 
-CREATE TABLE "departments" (
-    "dept_no" VARCHAR(10)   NOT NULL,
-    "dept_name" VARCHAR(30)   NOT NULL,
-    CONSTRAINT "pk_Departments" PRIMARY KEY (
-        "dept_no"
-     )
-);
-
-CREATE TABLE "Employees" (
+CREATE TABLE "employees" (
     "emp_no" INT   NOT NULL,
     "title_id" VARCHAR(10)   NOT NULL,
     "birth_date" DATE   NOT NULL,
@@ -31,39 +24,51 @@ CREATE TABLE "Employees" (
     "last_name" VARCHAR(255)   NOT NULL,
     "sex" VARCHAR(5)   NOT NULL,
     "hire_date" DATE   NOT NULL,
-    CONSTRAINT "pk_Employees" PRIMARY KEY (
+    CONSTRAINT "pk_employees" PRIMARY KEY (
         "emp_no"
      )
 );
 
-CREATE TABLE "Dept_Emp" (
+CREATE TABLE "departments" (
+    "dept_no" VARCHAR(10)   NOT NULL,
+    "dept_name" VARCHAR(30)   NOT NULL,
+    CONSTRAINT "pk_departments" PRIMARY KEY (
+        "dept_no"
+     )
+);
+
+CREATE TABLE "dept_emp" (
     "emp_no" INT   NOT NULL,
     "dept_no" VARCHAR(10)   NOT NULL
 );
 
-CREATE TABLE "Dept_Managers" (
+CREATE TABLE "dept_managers" (
     "dept_no" VARCHAR(10)   NOT NULL,
     "emp_no" INT   NOT NULL
 );
 
-CREATE TABLE "Salaries" (
+CREATE TABLE "salaries" (
     "emp_no" INT   NOT NULL,
     "salary" INT   NOT NULL
 );
 
-ALTER TABLE "Employees" ADD CONSTRAINT "fk_Employees_title_id" FOREIGN KEY("title_id")
-REFERENCES "Titles" ("title_id");
 
-ALTER TABLE "Dept_Emp" ADD CONSTRAINT "fk_Dept_Emp_emp_no" FOREIGN KEY("emp_no")
-REFERENCES "Employees" ("emp_no");
+ALTER TABLE "employees" ADD CONSTRAINT "fk_employees_title_id" FOREIGN KEY("title_id")
+REFERENCES "titles" ("title_id");
 
-ALTER TABLE "Dept_Managers" ADD CONSTRAINT "fk_Dept_Managers_dept_no" FOREIGN KEY("dept_no")
-REFERENCES "Departments" ("dept_no");
+ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_emp_no" FOREIGN KEY("emp_no")
+REFERENCES "employees" ("emp_no");
 
-ALTER TABLE "Dept_Managers" ADD CONSTRAINT "fk_Dept_Managers_emp_no" FOREIGN KEY("emp_no")
-REFERENCES "Employees" ("emp_no");
+ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_dept_no" FOREIGN KEY("dept_no")
+REFERENCES "departments" ("dept_no");
 
-ALTER TABLE "Salaries" ADD CONSTRAINT "fk_Salaries_emp_no" FOREIGN KEY("emp_no")
-REFERENCES "Employees" ("emp_no");
+ALTER TABLE "dept_managers" ADD CONSTRAINT "fk_dept_managers_dept_no" FOREIGN KEY("dept_no")
+REFERENCES "departments" ("dept_no");
+
+ALTER TABLE "dept_managers" ADD CONSTRAINT "fk_dept_managers_emp_no" FOREIGN KEY("emp_no")
+REFERENCES "employees" ("emp_no");
+
+ALTER TABLE "salaries" ADD CONSTRAINT "fk_salaries_emp_no" FOREIGN KEY("emp_no")
+REFERENCES "employees" ("emp_no");
 
 
